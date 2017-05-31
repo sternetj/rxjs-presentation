@@ -1,0 +1,17 @@
+<a class="refresh">Refresh</a>
+
+<app-user-widget
+  *ngFor="let user of users; let idx = index"
+  [user]="userStreams[idx] | async"
+  (onCreated)="bindEvent(idx, $event)"></app-user-widget>
+
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 10px;
+  }
+  .refresh {
+      font-size: 80%;
+      margin-left: 10px;
+  }
+</style>
