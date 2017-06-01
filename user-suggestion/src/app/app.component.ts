@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewInit {
     avatar_url: string;
   }>;
   suggestion1Stream: Observable<any>;
-  private userIndex = 1;
+  private userIndex = -29;
   public userStreams = [];
 
   constructor(public http: Http) { }
@@ -34,7 +34,8 @@ export class AppComponent implements AfterViewInit {
 
     const requestStream = refreshClickStream.startWith('startup click')
       .map(() => {
-        return 'https://api.github.com/users?since=' + this.userIndex++;
+        this.userIndex += 30;
+        return 'https://api.github.com/users?since=' + this.userIndex;
       });
 
     this.responseStream = requestStream
@@ -51,7 +52,7 @@ export class AppComponent implements AfterViewInit {
   private createSuggestionStream(closeClickStream) {
     return closeClickStream.startWith('startup click')
       .combineLatest(this.responseStream, (click, listUsers) => {
-        return listUsers[0];
+        return listUsers[Math.floor(Math.random() * listUsers.length)];
       })
       .startWith(null);
   }
