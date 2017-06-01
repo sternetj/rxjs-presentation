@@ -1,5 +1,5 @@
 <div class="suggestion1">
     <img [src]="user?.avatar_url" />
     <a [href]="user?.html_url" target="_blank" class="username">{{user?.login}}</a>
-    <a href="#" class="close" #closeButton>x</a>
+    <a href="#" class="close" (click)="closeClicked.emit()">x</a>
 </div>

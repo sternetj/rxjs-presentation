@@ -12,3 +12,10 @@
       bottom: 15px;
       left: 5px;
   }
+  :host {
+    width: 200px;
+    background-color: lightblue;
+    padding: 0px 2px;
+    display: block;
+    margin-bottom: 5px;
+  }

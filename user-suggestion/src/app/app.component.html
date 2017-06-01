@@ -1,9 +1,10 @@
-<a class="refresh">Refresh</a>
 
-<app-user-widget
-  *ngFor="let user of users; let idx = index"
-  [user]="userStreams[idx] | async"
-  (onCreated)="bindEvent(idx, $event)"></app-user-widget>
+<app-user-widget [user]="userStreams[0] | async"></app-user-widget>
+<app-user-widget [user]="userStreams[1] | async"></app-user-widget>
+<app-user-widget [user]="userStreams[2] | async"></app-user-widget>
+<div class="anchor">
+<a href="#" class="refresh">More...</a>
+</div>
 
 <style>
   body {
@@ -13,5 +14,12 @@
   .refresh {
       font-size: 80%;
       margin-left: 10px;
+  }
+  a {
+    direction: rtl;
+  }
+  .anchor {
+    display: block;
+    width: 200px;
   }
 </style>
