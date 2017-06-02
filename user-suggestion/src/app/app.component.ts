@@ -29,7 +29,7 @@ export class AppComponent implements AfterViewInit {
     const refreshButton = document.querySelector('.refresh');
     const refreshClickStream = Observable.fromEvent(refreshButton, 'click');
 
-    const requestStream = refreshClickStream// .startWith('startup click')
+    const requestStream = refreshClickStream.startWith('startup click')
       .map(() => {
         this.userIndex += 30;
         return 'https://api.github.com/users?since=' + this.userIndex;
@@ -42,13 +42,12 @@ export class AppComponent implements AfterViewInit {
 
 
     this.widgets.toArray().forEach((widget, i) => {
-      this.userStreams[i] = this.responseStream.map((users) => this.getUser(users));
-      // this.userStreams[i] = this.createSuggestionStream(widget.closeClickedObservable);
+      this.userStreams[i] = this.createSuggestionStream(widget.closeClickedObservable);
     });
   }
 
   private createSuggestionStream(closeClickStream) {
-    return closeClickStream// .startWith('startup click')
+    return closeClickStream.startWith('startup click')
       .combineLatest(this.responseStream, (click, listUsers) => this.getUser(listUsers));
   }
 
