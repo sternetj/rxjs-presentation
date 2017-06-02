@@ -26,7 +26,30 @@ export class AppComponent implements AfterViewInit {
   constructor(public http: Http) { }
 
   ngAfterViewInit(): void {
+    const refreshButton = document.querySelector('.refresh');
+    const refreshClickStream = Observable.fromEvent(refreshButton, 'click');
 
+    const requestStream = refreshClickStream// .startWith('startup click')
+      .map(() => {
+        this.userIndex += 30;
+        return 'https://api.github.com/users?since=' + this.userIndex;
+      });
+
+    this.responseStream = requestStream
+      .mergeMap((requestUrl) => {
+        return this.http.get(requestUrl).map((d) => d.json() as UserInfo[]);
+      });
+
+
+    this.widgets.toArray().forEach((widget, i) => {
+      this.userStreams[i] = this.responseStream.map((users) => this.getUser(users));
+      // this.userStreams[i] = this.createSuggestionStream(widget.closeClickedObservable);
+    });
+  }
+
+  private createSuggestionStream(closeClickStream) {
+    return closeClickStream// .startWith('startup click')
+      .combineLatest(this.responseStream, (click, listUsers) => this.getUser(listUsers));
   }
 
   private getUser(users: UserInfo[]) {
